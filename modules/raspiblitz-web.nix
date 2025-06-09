@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  name = "blitz-web";
+  name = "raspiblitz-web";
   cfg = config.services.${name};
 
   inherit (lib) mkOption mkIf mkEnableOption types literalExpression;

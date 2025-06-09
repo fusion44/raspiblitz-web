@@ -6,12 +6,12 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
-  outputs = inputs @ {
+  outputs = {
     self,
     nixpkgs,
     flake-utils,
   }: let
-    name = "blitz-web";
+    name = "raspiblitz-web";
 
     systems =
       flake-utils.lib.eachDefaultSystem
@@ -20,25 +20,7 @@
       in {
         packages = {
           default = self.packages.${system}.${name};
-          ${name} =
-            pkgs.buildNpmPackage
-            {
-              name = "${name}";
-              buildInputs = [pkgs.nodejs_22];
-              src = ./.;
-
-              npmDepsHash = "sha256-DT5+1KH06cMLHgMMPIiL1LMfxoOM4i15Z1MQok/eLS8=";
-
-              preBuild = ''
-                sed -i "s(const BACKEND_SERVER = "http://localhost:8000";(const BACKEND_SERVER = "http://127.0.0.1";(" vite.config.ts
-              '';
-
-              installPhase = ''
-                mkdir $out
-                npm run build
-                cp -r build/* $out
-              '';
-            };
+          ${name} = pkgs.callPackage ./default.nix {};
         };
 
         devShells.default = pkgs.mkShell {
