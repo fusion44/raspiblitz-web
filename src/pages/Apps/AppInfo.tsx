@@ -1,10 +1,3 @@
-import { Alert } from "@/components/Alert";
-import AppIcon from "@/components/AppIcon";
-import { SSEContext } from "@/context/sse-context";
-import PageLoadingScreen from "@/layouts/PageLoadingScreen";
-import { availableApps } from "@/utils/availableApps";
-import { checkError } from "@/utils/checkError";
-import { instance } from "@/utils/interceptor";
 import {
   ChevronLeftIcon,
   PlusIcon,
@@ -15,6 +8,13 @@ import { type FC, useCallback, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router";
 import { toast } from "react-toastify";
+import { Alert } from "@/components/Alert";
+import AppIcon from "@/components/AppIcon";
+import { SSEContext } from "@/context/sse-context";
+import PageLoadingScreen from "@/layouts/PageLoadingScreen";
+import { availableApps } from "@/utils/availableApps";
+import { checkError } from "@/utils/checkError";
+import { instance } from "@/utils/interceptor";
 import ImageCarousel from "./ImageCarousel";
 
 export const AppInfo: FC = () => {
@@ -24,9 +24,9 @@ export const AppInfo: FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { appStatus, installingApp, hardwareInfo } = useContext(SSEContext);
   const [imgs, setImgs] = useState<string[]>([]);
-  // biome-ignore lint/style/noNonNullAssertion: <explanation>
+  // biome-ignore lint/style/noNonNullAssertion: value is expected to exist at this point
   const { name } = availableApps[appId!];
-  // biome-ignore lint/style/noNonNullAssertion: <explanation>
+  // biome-ignore lint/style/noNonNullAssertion: value is expected to exist at this point
   const { author, repository } = availableApps[appId!];
   const { installed, version } =
     appStatus.data.find((app) => app.id === appId) || {};
@@ -77,12 +77,12 @@ export const AppInfo: FC = () => {
 
   if (!appId) {
     navigate("/apps");
-    return <></>;
+    return null;
   }
 
   const video =
     appId === "mempool" ? (
-      // biome-ignore lint/a11y/useMediaCaption: <explanation>
+      // biome-ignore lint/a11y/useMediaCaption: value is expected to exist at this point
       <video width="2000" height="1000" controls>
         <source src="/assets/apps/videos/mempool.mp4" type="video/mp4" />
       </video>

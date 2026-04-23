@@ -1,3 +1,7 @@
+import { HttpStatusCode } from "axios";
+import { type FC, useCallback, useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import { AppContext } from "@/context/app-context";
 import { SSEContext } from "@/context/sse-context";
 import { useInterval } from "@/hooks/use-interval";
@@ -7,10 +11,6 @@ import type { Transaction } from "@/models/transaction.model";
 import { enableGutter } from "@/utils";
 import { checkError } from "@/utils/checkError";
 import { instance } from "@/utils/interceptor";
-import { HttpStatusCode } from "axios";
-import { type FC, useCallback, useContext, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
 import BitcoinCard from "./BitcoinCard";
 import ConnectionCard from "./ConnectionCard";
 import HardwareCard from "./HardwareCard";
@@ -111,7 +111,7 @@ const Home: FC = () => {
       if (tx.status === HttpStatusCode.Ok && walletLocked) {
         setWalletLocked(false);
       }
-      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+      // biome-ignore lint/suspicious/noExplicitAny: value is expected to exist at this point
     } catch (err: any) {
       if (err.response.status === HttpStatusCode.Locked) {
         setWalletLocked(true);
@@ -175,16 +175,16 @@ const Home: FC = () => {
       )}
       {activeModal === "OPEN_CHANNEL" && (
         <OpenChannelModal
-          // biome-ignore lint/style/noNonNullAssertion: <explanation>
+          // biome-ignore lint/style/noNonNullAssertion: value is expected to exist at this point
           balance={balance.channel_local_balance!}
           disclosure={{ ...disclosure, onClose: closeModalHandler }}
         />
       )}
       {activeModal === "SEND" && (
         <SendModal
-          // biome-ignore lint/style/noNonNullAssertion: <explanation>
+          // biome-ignore lint/style/noNonNullAssertion: value is expected to exist at this point
           onchainBalance={balance.onchain_confirmed_balance!}
-          // biome-ignore lint/style/noNonNullAssertion: <explanation>
+          // biome-ignore lint/style/noNonNullAssertion: value is expected to exist at this point
           lnBalance={balance.channel_local_balance!}
           disclosure={{ ...disclosure, onClose: closeModalHandler }}
         />
@@ -196,7 +196,7 @@ const Home: FC = () => {
       )}
       {activeModal === "DETAIL" && (
         <TransactionDetailModal
-          // biome-ignore lint/style/noNonNullAssertion: <explanation>
+          // biome-ignore lint/style/noNonNullAssertion: value is expected to exist at this point
           transaction={detailTx!}
           disclosure={{ ...disclosure, onClose: closeModalHandler }}
         />

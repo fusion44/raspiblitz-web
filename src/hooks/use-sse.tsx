@@ -1,10 +1,13 @@
+import { useCallback, useContext, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import { AppContext } from "@/context/app-context";
-import { SSEContext, SSE_URL } from "@/context/sse-context";
+import { SSE_URL, SSEContext } from "@/context/sse-context";
+import type { App } from "@/models/app.model";
 import type {
   AppStateUpdateMessage,
   AppStatusQueryResponse,
 } from "@/models/app-status";
-import type { App } from "@/models/app.model";
 import type { BtcInfo } from "@/models/btc-info";
 import type { HardwareInfo } from "@/models/hardware-info";
 import type { InstallAppData } from "@/models/install-app";
@@ -12,11 +15,8 @@ import type { LnInfo } from "@/models/ln-info";
 import type { SystemInfo } from "@/models/system-info";
 import type { SystemStartupInfo } from "@/models/system-startup-info";
 import type { WalletBalance } from "@/models/wallet-balance";
-import { ACCESS_TOKEN, setWindowAlias } from "@/utils";
+import { setWindowAlias } from "@/utils";
 import { availableApps } from "@/utils/availableApps";
-import { useCallback, useContext, useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
 
 /**
  * Establishes a SSE connection if not available yet & attaches / removes event listeners
@@ -115,7 +115,7 @@ function useSSE() {
 
         const state = parsedData.state || "";
         const error_id = parsedData.error_id || "none";
-        const mode = parsedData.mode || "";
+        const _mode = parsedData.mode || "";
 
         // The message field replaces the details field in the new format
         const details = parsedData.message || "";
@@ -365,10 +365,7 @@ function useSSE() {
               const status = {
                 data: Array.isArray(message.data) ? message.data : [],
                 errors: Array.isArray(message.errors) ? message.errors : [],
-                timestamp:
-                  typeof message.timestamp === "number"
-                    ? message.timestamp
-                    : Date.now(),
+                timestamp: message.timestamp || Date.now(),
               };
 
               // If previous state is empty, just return the new status

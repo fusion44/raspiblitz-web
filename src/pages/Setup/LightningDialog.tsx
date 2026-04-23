@@ -1,3 +1,6 @@
+import { RadioGroup } from "@heroui/react";
+import { type FormEvent, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import BitcoinLogo from "@/assets/bitcoin-logo.svg";
 import CLLogo from "@/assets/core_lightning_logo_only.png";
 import LNDLogo from "@/assets/lnd.png";
@@ -5,9 +8,6 @@ import { Button } from "@/components/Button";
 import { Headline } from "@/components/Headline";
 import SetupContainer from "@/layouts/SetupContainer";
 import { SetupLightning } from "@/models/setup.model";
-import { RadioGroup } from "@heroui/react";
-import { type FormEvent, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
 import CustomRadio from "./CustomRadio";
 
 type Props = {
@@ -47,7 +47,7 @@ export default function LightningDialog({ callback }: Props) {
               i18nKey="setup.select_lightning_help"
               t={t}
               components={[
-                // biome-ignore lint/a11y/useAnchorContent: <explanation>
+                // biome-ignore lint/a11y/useAnchorContent: value is expected to exist at this point
                 <a
                   key="link"
                   href="https://docs.raspiblitz.org/docs/setup/software-setup/basic"

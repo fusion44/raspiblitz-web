@@ -1,5 +1,3 @@
-import AppIcon from "@/components/AppIcon";
-import { instance } from "@/utils/interceptor";
 import {
   ArrowTopRightOnSquareIcon,
   LinkIcon,
@@ -8,6 +6,8 @@ import { Button, Link } from "@heroui/react";
 import type { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import AppIcon from "@/components/AppIcon";
+import { instance } from "@/utils/interceptor";
 
 export const AppCardAlby: FC = () => {
   const { id, name } = {
@@ -78,7 +78,7 @@ export const AppCardAlby: FC = () => {
         {/* Content */}
         <div className="mt-4 flex w-3/4 flex-col items-start justify-center text-xl">
           <h4>{name}</h4>
-          <p className="overflow-ellipsis text-base text-gray-200">
+          <p className="text-ellipsis text-base text-gray-200">
             {t(`appInfo.${id}.shortDescription`)}
           </p>
         </div>

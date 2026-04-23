@@ -1,3 +1,8 @@
+import { Input } from "@heroui/react";
+import { type ChangeEvent, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import { Alert } from "@/components/Alert";
 import AmountInput from "@/components/AmountInput";
 import AvailableBalance from "@/components/AvailableBalance";
@@ -9,11 +14,6 @@ import {
 import { checkError } from "@/utils/checkError";
 import { convertMSatToSat, stringToNumber } from "@/utils/format";
 import { instance } from "@/utils/interceptor";
-import { Input } from "@heroui/react";
-import { type ChangeEvent, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
 
 interface IFormInputs {
   nodeUri: string;
@@ -72,7 +72,7 @@ export default function OpenChannelModal({ balance, disclosure }: Props) {
       <form onSubmit={handleSubmit(openChannelHandler)}>
         <ConfirmModal.Header>{t("home.open_channel")}</ConfirmModal.Header>
         <ConfirmModal.Body>
-          {/* biome-ignore lint/style/noNonNullAssertion: <explanation> */}
+          {/* biome-ignore lint/style/noNonNullAssertion: value is expected to exist at this point */}
           <AvailableBalance balance={convertedBalance!} />
 
           <fieldset className="flex w-full flex-col gap-4">
@@ -104,15 +104,15 @@ export default function OpenChannelModal({ balance, disclosure }: Props) {
                 onChange: changeAmountHandler,
               })}
             />
-            <div className="flex justify-around py-8 md:mx-auto md:w-1/2">
-              <label htmlFor="targetConf" className="font-bold">
+            <div className="flex items-center justify-between rounded-xl px-3 py-3">
+              <label htmlFor="targetConf" className="text-sm text-secondary">
                 {t("tx.fee_rate")}
               </label>
               <select
                 id="targetConf"
                 defaultValue={4}
                 {...register("feeRate")}
-                className="rounded bg-yellow-500 p-1 text-white"
+                className="rounded-lg bg-primary px-3 py-2 text-sm outline-none"
               >
                 <option value={1}>{t("home.urgent")}</option>
                 <option value={4}>{t("home.normal")}</option>

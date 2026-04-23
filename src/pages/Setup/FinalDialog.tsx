@@ -1,12 +1,12 @@
+import { CheckCircleIcon } from "@heroicons/react/24/outline";
+import { Checkbox } from "@heroui/react";
+import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { Alert } from "@/components/Alert";
 import { Button } from "@/components/Button";
 import { Headline } from "@/components/Headline";
 import SetupContainer from "@/layouts/SetupContainer";
 import type { SetupPhase } from "@/models/setup.model";
-import { CheckCircleIcon } from "@heroicons/react/24/outline";
-import { Checkbox } from "@heroui/react";
-import { Controller, useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
 
 export type Props = {
   setupPhase: SetupPhase;
@@ -48,10 +48,10 @@ export default function FinalDialog({
           {!!seedWords && <Alert as="h4">{t("setup.final_seedwords")}</Alert>}
 
           {!!seedWords && (
-            <ol className="flex h-[26rem] w-full list-decimal flex-col flex-wrap gap-x-8 rounded-3xl bg-tertiary pl-20 pt-3 font-bold lowercase">
+            <ol className="flex h-104 w-full list-decimal flex-col flex-wrap gap-x-8 rounded-3xl bg-tertiary pl-20 pt-3 font-bold lowercase">
               {seedWords.split(", ").map((word, index) => {
                 return (
-                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  // biome-ignore lint/suspicious/noArrayIndexKey: value is expected to exist at this point
                   <li key={index} className="my-3 pl-2">
                     {word}
                   </li>

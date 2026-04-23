@@ -1,3 +1,6 @@
+import { Tab, Tabs } from "@heroui/react";
+import { type FC, type Key, useContext, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Alert } from "@/components/Alert";
 import {
   ConfirmModal,
@@ -7,10 +10,6 @@ import { AppContext, Unit } from "@/context/app-context";
 import { checkError } from "@/utils/checkError";
 import { convertBtcToSat } from "@/utils/format";
 import { instance } from "@/utils/interceptor";
-import { Tab, Tabs } from "@heroui/tabs";
-import type { FC } from "react";
-import { useContext, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { TxType } from "../SwitchTxType";
 import QRCode from "./QRCode";
 import ReceiveLN, { type IFormInputs } from "./ReceiveLN";
@@ -21,7 +20,6 @@ const ReceiveModal: FC<Pick<ConfirmModalProps, "disclosure">> = ({
   const { t } = useTranslation();
   const { unit } = useContext(AppContext);
 
-  const [invoiceType, setInvoiceType] = useState<TxType>(TxType.LIGHTNING);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [invoice, setInvoice] = useState("");
@@ -75,59 +73,55 @@ const ReceiveModal: FC<Pick<ConfirmModalProps, "disclosure">> = ({
       });
   };
 
-  const handleTabChange = (key: React.Key) => {
-    setInvoiceType(key as TxType);
+  const handleTabChange = async (key: Key) => {
     setError("");
 
-    // biome-ignore lint/suspicious/noDoubleEquals: <explanation>
+    // biome-ignore lint/suspicious/noDoubleEquals: value is expected to exist at this point
     if (key == TxType.ONCHAIN && !address) {
-      generateOnChainAddressHandler();
+      await generateOnChainAddressHandler();
     }
   };
 
   return (
     <ConfirmModal disclosure={disclosure} custom>
-      <>
-        <ConfirmModal.Header>{t("wallet.receive")}</ConfirmModal.Header>
+      <ConfirmModal.Header>{t("wallet.receive")}</ConfirmModal.Header>
 
-        <div className="mx-6">
-          <Tabs
-            classNames={{
-              tabList: "flex-col md:flex-row",
-            }}
-            fullWidth
-            aria-label={t("wallet.receive_aria_options")}
-            selectedKey={invoiceType}
-            onSelectionChange={handleTabChange}
-          >
-            <Tab key={TxType.LIGHTNING} title={t("wallet.create_invoice_ln")}>
-              {invoice ? (
-                <ConfirmModal.Body>
-                  <QRCode address={invoice} />
-                </ConfirmModal.Body>
-              ) : (
-                <ReceiveLN
-                  onSubmitHandler={generateInvoiceHandler}
-                  isLoading={isLoading}
-                  error={error}
+      <div className="mx-6">
+        <Tabs
+          classNames={{
+            tabList: "flex-col md:flex-row",
+          }}
+          fullWidth
+          aria-label={t("wallet.receive_aria_options")}
+          onSelectionChange={handleTabChange}
+        >
+          <Tab key={TxType.LIGHTNING} title={t("wallet.create_invoice_ln")}>
+            {invoice ? (
+              <ConfirmModal.Body>
+                <QRCode address={invoice} />
+              </ConfirmModal.Body>
+            ) : (
+              <ReceiveLN
+                onSubmitHandler={generateInvoiceHandler}
+                isLoading={isLoading}
+                error={error}
+              />
+            )}
+          </Tab>
+          <Tab key={TxType.ONCHAIN} title={t("wallet.fund")}>
+            <ConfirmModal.Body>
+              {!address && error && <Alert color="danger">{error}</Alert>}
+
+              {address && !error && (
+                <QRCode
+                  address={address}
+                  onRefreshHandler={generateOnChainAddressHandler}
                 />
               )}
-            </Tab>
-            <Tab key={TxType.ONCHAIN} title={t("wallet.fund")}>
-              <ConfirmModal.Body>
-                {!address && error && <Alert color="danger">{error}</Alert>}
-
-                {address && !error && (
-                  <QRCode
-                    address={address}
-                    onRefreshHandler={generateOnChainAddressHandler}
-                  />
-                )}
-              </ConfirmModal.Body>
-            </Tab>
-          </Tabs>
-        </div>
-      </>
+            </ConfirmModal.Body>
+          </Tab>
+        </Tabs>
+      </div>
     </ConfirmModal>
   );
 };

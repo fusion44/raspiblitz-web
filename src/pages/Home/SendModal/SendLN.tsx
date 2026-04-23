@@ -1,13 +1,13 @@
-import { Alert } from "@/components/Alert";
-import AvailableBalance from "@/components/AvailableBalance";
-import { Button } from "@/components/Button";
-import { ConfirmModal } from "@/components/ConfirmModal";
-import { convertMSatToSat } from "@/utils/format";
 import { Input } from "@heroui/react";
 import { type FC, useState } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { Alert } from "@/components/Alert";
+import AvailableBalance from "@/components/AvailableBalance";
+import { Button } from "@/components/Button";
+import { ConfirmModal } from "@/components/ConfirmModal";
+import { convertMSatToSat } from "@/utils/format";
 import { TxType } from "../SwitchTxType";
 import type { SendLnForm } from "./SendModal";
 import type { SendOnChainForm } from "./SendOnChain";
@@ -58,7 +58,7 @@ const SendLn: FC<Props> = ({
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <ConfirmModal.Body>
-        {/* biome-ignore lint/style/noNonNullAssertion: <explanation> */}
+        {/* biome-ignore lint/style/noNonNullAssertion: value is expected to exist at this point */}
         <AvailableBalance balance={convertedBalance!} />
 
         <Input

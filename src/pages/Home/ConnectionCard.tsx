@@ -1,5 +1,3 @@
-import { SSEContext } from "@/context/sse-context";
-import useClipboard from "@/hooks/use-clipboard";
 import {
   ClipboardDocumentCheckIcon,
   EyeIcon,
@@ -10,6 +8,8 @@ import { Spinner } from "@heroui/react";
 import { type FC, useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Tooltip } from "react-tooltip";
+import { SSEContext } from "@/context/sse-context";
+import useClipboard from "@/hooks/use-clipboard";
 import QRCodeModal from "./QRCodeModal";
 
 const HIDDEN_TEXT = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
@@ -84,7 +84,7 @@ export const ConnectionCard: FC = () => {
               <a
                 className={`${
                   showAddress
-                    ? "w-10/12 overflow-hidden overflow-ellipsis text-blue-400 underline"
+                    ? "w-10/12 overflow-hidden text-ellipsis text-blue-400 underline"
                     : "text-blur w-10/12"
                 }`}
                 title={`${torAddress}`}
@@ -118,7 +118,7 @@ export const ConnectionCard: FC = () => {
             <a
               className={`${
                 showAddress
-                  ? "w-10/12 overflow-hidden overflow-ellipsis text-blue-400 underline"
+                  ? "w-10/12 overflow-hidden text-ellipsis text-blue-400 underline"
                   : "text-blur w-10/12"
               }`}
               title={`${sshAddress}`}
@@ -148,7 +148,7 @@ export const ConnectionCard: FC = () => {
               <a
                 className={`w-8/12 ${
                   showAddress
-                    ? "overflow-hidden overflow-ellipsis text-blue-400 underline"
+                    ? "overflow-hidden text-ellipsis text-blue-400 underline"
                     : "text-blur"
                 }`}
                 title={`${nodeId}`}

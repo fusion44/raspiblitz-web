@@ -1,7 +1,7 @@
-import { AppContext, type AppContextType, Unit } from "@/context/app-context";
-import i18n from "@/i18n/test_config";
 import { I18nextProvider } from "react-i18next";
 import { render, screen } from "test-utils";
+import { AppContext, type AppContextType, Unit } from "@/context/app-context";
+import i18n from "@/i18n/test_config";
 import AvailableBalance from "../AvailableBalance";
 
 const contextValues: AppContextType = {
@@ -26,8 +26,9 @@ describe("AvailableBalance", () => {
       </I18nextProvider>,
     );
 
-    expect(screen.getByText("wallet.available_balance:")).toBeInTheDocument();
-    expect(screen.getByText(`500,000,000 ${Unit.SAT}`)).toBeInTheDocument();
+    expect(screen.getByText("wallet.available_balance")).toBeInTheDocument();
+    expect(screen.getByText("500,000,000")).toBeInTheDocument();
+    expect(screen.getByText(Unit.SAT)).toBeInTheDocument();
   });
 
   it("renders with BTC unit", () => {
@@ -39,7 +40,8 @@ describe("AvailableBalance", () => {
       </I18nextProvider>,
     );
 
-    expect(screen.getByText("wallet.available_balance:")).toBeInTheDocument();
-    expect(screen.getByText(`5.00000000 ${Unit.BTC}`)).toBeInTheDocument();
+    expect(screen.getByText("wallet.available_balance")).toBeInTheDocument();
+    expect(screen.getByText("5.00000000")).toBeInTheDocument();
+    expect(screen.getByText(Unit.BTC)).toBeInTheDocument();
   });
 });
