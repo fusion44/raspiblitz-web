@@ -44,17 +44,32 @@ const App: FC = () => {
           setIsLoading(false);
           return;
         }
-        await instance.get("/setup/status").then((resp) => {
-          const setupPhase = resp.data.setupPhase;
-          const initialSync = resp.data.initialsync;
-          if (setupPhase !== SetupPhase.DONE || initialSync === "running") {
-            setNeedsSetup(true);
-            navigate("/setup");
-          } else {
-            setNeedsSetup(false);
-          }
-          setIsLoading(false);
-        });
+        await instance
+          .get("/setup/status")
+          .then((resp) => {
+            const setupPhase = resp.data.setupPhase;
+            const initialSync = resp.data.initialsync;
+            if (setupPhase !== SetupPhase.DONE || initialSync === "running") {
+              setNeedsSetup(true);
+              navigate("/setup");
+            } else {
+              setNeedsSetup(false);
+            }
+          })
+          .catch((err) => {
+            // Non-raspiblitz platforms (e.g. BAPI_PLATFORM=native_python)
+            // don't register the /setup router, so /setup/status 404s.
+            // Treat that as "setup is handled elsewhere, nothing to
+            // orchestrate from the web UI" and carry on.
+            if (err?.response?.status === 404) {
+              setNeedsSetup(false);
+            } else {
+              console.error("Failed to query /setup/status", err);
+            }
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
       }
 
       check();
